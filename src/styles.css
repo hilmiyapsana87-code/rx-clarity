@@ -73,8 +73,8 @@
   --color-ink-soft: var(--ink-soft);
   --color-scan: var(--scan);
   --color-scan-foreground: var(--scan-foreground);
-  --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --shadow-lens: 0 14px 32px -18px color-mix(in oklab, var(--primary) 42%, transparent);
   --shadow-lens-lg: 0 24px 60px -28px color-mix(in oklab, var(--primary) 46%, transparent);
   --shadow-card: 0 18px 48px -34px color-mix(in oklab, var(--foreground) 28%, transparent);
