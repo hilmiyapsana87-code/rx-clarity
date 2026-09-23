@@ -1,16 +1,35 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
-  Outlet,
   Link,
+  Outlet,
   createRootRouteWithContext,
-  useRouter,
   HeadContent,
   Scripts,
+  useRouter,
+  useRouterState,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { Menu, ShieldCheck, Sparkles } from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+
+const navItems = [
+  { to: "/", label: "Home" },
+  { to: "/how-it-works", label: "How It Works" },
+  { to: "/analyze", label: "Analyze" },
+  { to: "/safety", label: "Safety" },
+  { to: "/about", label: "About" },
+] as const;
 
 function NotFoundComponent() {
   return (
@@ -77,16 +96,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "author", content: "RxLens" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -119,8 +137,137 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <AppChrome>
+        <Outlet />
+      </AppChrome>
     </QueryClientProvider>
+  );
+}
+
+function AppChrome({ children }: { children: ReactNode }) {
+  const [highContrast, setHighContrast] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("high-contrast", highContrast);
+    return () => document.documentElement.classList.remove("high-contrast");
+  }, [highContrast]);
+
+  return (
+    <div className="min-h-dvh bg-rxlens-page text-foreground">
+      <header className="sticky top-0 z-40 border-b border-border/80 bg-background/88 backdrop-blur-xl">
+        <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex min-w-0 items-center gap-3" aria-label="RxLens home">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-clinical-gradient text-primary-foreground shadow-lens">
+              <Sparkles className="size-5" aria-hidden="true" />
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate font-display text-lg font-bold tracking-normal text-foreground">
+                RxLens
+              </span>
+              <span className="hidden text-xs font-medium text-muted-foreground sm:block">
+                Demo Mode
+              </span>
+            </span>
+          </Link>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <nav aria-label="Primary navigation" className="flex items-center gap-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                  activeProps={{ className: "bg-primary-soft text-primary" }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <Button
+              type="button"
+              variant={highContrast ? "default" : "clinical"}
+              size="sm"
+              onClick={() => setHighContrast((current) => !current)}
+            >
+              <ShieldCheck aria-hidden="true" />
+              Accessibility
+            </Button>
+            <Button asChild variant="hero" size="lg">
+              <Link to="/analyze">Analyze Prescription</Link>
+            </Button>
+          </div>
+
+          <MobileNav highContrast={highContrast} onToggleContrast={() => setHighContrast((current) => !current)} />
+        </div>
+      </header>
+
+      <main>{children}</main>
+
+      <footer className="border-t border-border bg-background/80">
+        <div className="mx-auto grid max-w-7xl gap-4 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6 lg:px-8">
+          <p className="max-w-2xl">
+            RxLens is a hackathon prototype for educational prescription understanding. It does not diagnose, prescribe, or change treatment.
+          </p>
+          <Link to="/safety" className="font-semibold text-primary hover:underline">
+            Review safety guidance
+          </Link>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function MobileNav({
+  highContrast,
+  onToggleContrast,
+}: {
+  highContrast: boolean;
+  onToggleContrast: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  return (
+    <div className="flex items-center gap-2 lg:hidden">
+      <span className="rounded-full border border-primary/20 bg-primary-soft px-2.5 py-1 text-xs font-bold text-primary">
+        Demo Mode
+      </span>
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline" size="icon" aria-label="Open navigation menu">
+            <Menu aria-hidden="true" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-[min(88vw,24rem)]">
+          <SheetHeader>
+            <SheetTitle>RxLens</SheetTitle>
+            <SheetDescription>See your prescription clearly.</SheetDescription>
+          </SheetHeader>
+          <nav aria-label="Mobile navigation" className="mt-8 grid gap-2">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="rounded-lg px-3 py-3 text-base font-semibold text-foreground hover:bg-accent"
+                activeProps={{ className: "bg-primary-soft text-primary" }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="mt-8 grid gap-3">
+            <Button type="button" variant={highContrast ? "default" : "clinical"} onClick={onToggleContrast}>
+              <ShieldCheck aria-hidden="true" />
+              Accessibility
+            </Button>
+            <Button asChild variant="hero" size="lg">
+              <Link to="/analyze">Analyze Prescription</Link>
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 }
