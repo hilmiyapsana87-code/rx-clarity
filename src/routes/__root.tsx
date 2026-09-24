@@ -165,7 +165,7 @@ function AppChrome({ children }: { children: ReactNode }) {
                 RxLens
               </span>
               <span className="hidden text-xs font-medium text-muted-foreground sm:block">
-                Demo Mode
+                See your prescription clearly.
               </span>
             </span>
           </Link>
@@ -231,9 +231,6 @@ function MobileNav({
 
   return (
     <div className="flex items-center gap-2 lg:hidden">
-      <span className="rounded-full border border-primary/20 bg-primary-soft px-2.5 py-1 text-xs font-bold text-primary">
-        Demo Mode
-      </span>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" aria-label="Open navigation menu">
