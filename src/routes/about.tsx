@@ -7,9 +7,9 @@ import { innovationCards } from "@/lib/rxlens-demo";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About RxLens — Healthcare Hackathon Prototype" },
-      { name: "description", content: "Learn about RxLens, a confidence-aware prescription-understanding prototype designed for a 24-hour healthcare hackathon." },
-      { property: "og:title", content: "About RxLens — Healthcare Hackathon Prototype" },
+      { title: "About RxLens — Prescription Understanding Prototype" },
+      { name: "description", content: "Learn about RxLens, a confidence-aware prescription-understanding prototype." },
+      { property: "og:title", content: "About RxLens — Prescription Understanding Prototype" },
       { property: "og:description", content: "RxLens converts difficult prescription information into a clearer, structured format while emphasizing professional verification." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

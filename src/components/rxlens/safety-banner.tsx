@@ -10,7 +10,7 @@ export function SafetyBanner({ compact = false }: { compact?: boolean }) {
         <div className="min-w-0">
           <h2 className="font-display text-xl font-bold text-foreground">RxLens provides information, not medical advice.</h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground sm:text-base">
-            Always follow the prescription and advice provided by your qualified healthcare professional. RxLens never tells you to start, stop, replace, or change treatment.
+            Always verify prescription information with your doctor or pharmacist before taking or changing medication. RxLens never tells you to start, stop, replace, or change treatment.
           </p>
         </div>
       </div>
