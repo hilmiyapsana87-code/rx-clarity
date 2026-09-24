@@ -12,7 +12,7 @@ export const Route = createFileRoute("/")({
       { title: "RxLens — See your prescription clearly" },
       {
         name: "description",
-        content: "RxLens is a healthcare hackathon prototype that helps patients understand handwritten prescriptions with confidence-aware guidance.",
+        content: "RxLens is a healthcare prototype that helps patients understand handwritten prescriptions with confidence-aware guidance.",
       },
       { property: "og:title", content: "RxLens — See your prescription clearly" },
       {
@@ -33,7 +33,7 @@ function Index() {
         <div className="animate-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-3 py-1.5 text-sm font-bold text-primary">
             <CheckCircle2 className="size-4" aria-hidden="true" />
-            24-hour healthcare hackathon prototype
+            See your prescription clearly.
           </div>
           <h1 className="mt-7 font-display text-5xl font-extrabold tracking-normal text-foreground sm:text-6xl lg:text-7xl">
             RxLens

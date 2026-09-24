@@ -206,7 +206,7 @@ function AppChrome({ children }: { children: ReactNode }) {
       <footer className="border-t border-border bg-background/80">
         <div className="mx-auto grid max-w-7xl gap-4 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:px-6 lg:px-8">
           <p className="max-w-2xl">
-            RxLens is a hackathon prototype for educational prescription understanding. It does not diagnose, prescribe, or change treatment.
+            RxLens is a prototype for educational prescription understanding. It does not diagnose, prescribe, or change treatment.
           </p>
           <Link to="/safety" className="font-semibold text-primary hover:underline">
             Review safety guidance

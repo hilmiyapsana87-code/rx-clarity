@@ -11,7 +11,7 @@ export const Route = createFileRoute("/how-it-works")({
       { title: "How RxLens Works — Prescription Understanding Workflow" },
       { name: "description", content: "See the four-step RxLens workflow: upload, read, organize, and understand prescription information with verification guidance." },
       { property: "og:title", content: "How RxLens Works — Prescription Understanding Workflow" },
-      { property: "og:description", content: "A clear visual workflow for the RxLens hackathon prototype." },
+      { property: "og:description", content: "A clear visual workflow for the RxLens prescription-understanding prototype." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

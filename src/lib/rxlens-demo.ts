@@ -16,8 +16,8 @@ import {
 export const demoPrescription = {
   patient: "Demo Patient",
   label: "FICTIONAL DEMO — NOT A REAL PRESCRIPTION",
-  date: "24-hour hackathon sample",
-  confidence: 91,
+  date: "Fictional sample",
+  confidence: 91, // fictional demo value only
   medicines: [
     {
       name: "Amoxicillin",

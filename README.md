@@ -1,6 +1,6 @@
 # Rx Clarity
 
-Build a polished, professional, responsive healthcare web application called RxLens for a 24-hour healthcare hackathon.
+Build a polished, professional, responsive healthcare web application called RxLens.
 
 CORE IDEA
 
@@ -58,7 +58,7 @@ Visual style:
 
 - Do NOT overcrowd the screen
 
-The website should look impressive enough for a university/international hackathon presentation.
+The website should look impressive enough.
 
 Brand:
 
@@ -178,7 +178,7 @@ Also provide a "Try Demo Prescription" button.
 
 IMPORTANT:
 
-Because this is a hackathon prototype, include a fictional built-in demo prescription so the complete workflow can be demonstrated without requiring a real patient's prescription.
+Because this is a prototype, include a fictional built-in demo prescription so the complete workflow can be demonstrated without requiring a real patient's prescription.
 
 Use a clearly fictional sample such as:
 
@@ -426,7 +426,7 @@ Do not claim that these features are clinically validated.
 
 ---
 
-HACKATHON DEMO MODE
+DEMO MODE
 
 Add a small "Demo Mode" indicator.
 
@@ -488,7 +488,7 @@ Use:
 
 - Client-side demo workflow
 
-For the hackathon MVP, use mock/demo data where external OCR or medical APIs are unavailable.
+Use mock/demo data where external OCR or medical APIs are unavailable.
 
 Do NOT create fake claims that real OCR or clinical validation is occurring.
 
@@ -598,7 +598,7 @@ Before finishing, test:
 
 Fix any broken interactions or visual overflow.
 
-Do not add features that are unnecessary for the 24-hour hackathon MVP.
+Do not add features that are unnecessary.
 
 This project was built with [Lovable](https://lovable.dev).
 
