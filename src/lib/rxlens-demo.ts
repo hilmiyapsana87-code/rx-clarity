@@ -130,3 +130,13 @@ export const processingSteps = [
 ] as const;
 
 export const brandIcon = Sparkles;
+
+// FICTIONAL 3-medicine demo (plus one deliberately unclear line) used by the
+// dashboard. Values are examples only — NOT a real prescription.
+export const DEMO_LABEL = "DEMO DATA — NOT A REAL PRESCRIPTION";
+export const demoMedicineLines = [
+  { name: "Amoxicillin", strength: "500 mg", form: "Capsule", frequency: "TID", duration: "5 days", instructions: "1 cap PO TID PC x 5 days", confidence: 94 },
+  { name: "Warfarin", strength: "5 mg", form: "Tablet", frequency: "OD HS", duration: "As directed", instructions: "1 tab PO OD HS", confidence: 90 },
+  { name: "Paracetamol", strength: "500 mg", form: "Tablet", frequency: "SOS", duration: "As directed", instructions: "1 tab PO SOS", confidence: 88 },
+  { name: null, strength: "20 mg", form: null, frequency: "BD", duration: null, instructions: "?? 20 mg BD", confidence: 51 },
+];
