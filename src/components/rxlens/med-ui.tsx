@@ -91,10 +91,10 @@ export function pairResults(meds: SessionMedicine[]): PairResult[] {
   const out: PairResult[] = [];
   for (let i = 0; i < meds.length; i++)
     for (let j = i + 1; j < meds.length; j++) {
-      const a = meds[i], b = meds[j];
+      const a = meds[i]!, b = meds[j]!;
       if (a.matchIds.length !== 1 || b.matchIds.length !== 1) out.push({ kind: "unknown", a, b });
       else {
-        const rec = medicineInfo.interaction(a.matchIds[0], b.matchIds[0]);
+        const rec = medicineInfo.interaction(a.matchIds[0]!, b.matchIds[0]!);
         out.push(rec ? { kind: "found", a, b, rec } : { kind: "none", a, b });
       }
     }
