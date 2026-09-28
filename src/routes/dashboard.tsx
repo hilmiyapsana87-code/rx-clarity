@@ -55,7 +55,7 @@ function Dashboard() {
   const pairs = pairResults(medicines);
   const potential = pairs.filter((p) => p.kind === "found").length;
   const low = medicines.filter((m) => m.origin !== "manual" && confidenceLevel(m.confidence) === "low").length;
-  const warnings = medicines.reduce((n, m) => n + (m.matchIds.length === 1 ? medicineInfo.get(m.matchIds[0])?.serious_warnings.length ?? 0 : 0), 0);
+  const warnings = medicines.reduce((n, m) => n + (m.matchIds.length === 1 ? medicineInfo.get(m.matchIds[0]!)?.serious_warnings.length ?? 0 : 0), 0);
   const identified = medicines.filter((m) => m.matchIds.length === 1).length;
 
   const slots: Slot[] = ["Morning", "Afternoon", "Night", "As needed"];
@@ -149,7 +149,7 @@ function Dashboard() {
                   </div>
                   <MatchNote m={m} />
                   {m.matchIds.length === 1 ? (
-                    <Link to="/medicine/$id" params={{ id: m.matchIds[0] }} className="mt-2 inline-block text-sm font-bold text-primary hover:underline">View medicine profile →</Link>
+                    <Link to="/medicine/$id" params={{ id: m.matchIds[0]! }} className="mt-2 inline-block text-sm font-bold text-primary hover:underline">View medicine profile →</Link>
                   ) : null}
                 </li>
               ))}

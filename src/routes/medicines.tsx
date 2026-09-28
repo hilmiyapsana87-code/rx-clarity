@@ -33,7 +33,7 @@ function MyMedicines() {
       ) : (
         <ul className="grid gap-5 md:grid-cols-2">
           {medicines.map((m) => {
-            const ref = m.matchIds.length === 1 ? medicineInfo.get(m.matchIds[0]) : null;
+            const ref = m.matchIds.length === 1 ? medicineInfo.get(m.matchIds[0]!) : null;
             const dec = decodeInstruction(m.instructions ?? m.frequency);
             const uncertain = m.origin !== "manual" && (m.confidence == null || m.confidence < 70);
             return (

@@ -17,6 +17,7 @@ import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as InteractionsRouteImport } from './routes/interactions'
 import { Route as MedicinesRouteImport } from './routes/medicines'
 import { Route as SafetyRouteImport } from './routes/safety'
+import { Route as MedicineIdRouteImport } from './routes/medicine.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const SafetyRoute = SafetyRouteImport.update({
   path: '/safety',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MedicineIdRoute = MedicineIdRouteImport.update({
+  id: '/medicine/$id',
+  path: '/medicine/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
   '/safety': typeof SafetyRoute
+  '/medicine/$id': typeof MedicineIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
   '/safety': typeof SafetyRoute
+  '/medicine/$id': typeof MedicineIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
   '/safety': typeof SafetyRoute
+  '/medicine/$id': typeof MedicineIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/interactions'
     | '/medicines'
     | '/safety'
+    | '/medicine/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/interactions'
     | '/medicines'
     | '/safety'
+    | '/medicine/$id'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/interactions'
     | '/medicines'
     | '/safety'
+    | '/medicine/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +144,7 @@ export interface RootRouteChildren {
   InteractionsRoute: typeof InteractionsRoute
   MedicinesRoute: typeof MedicinesRoute
   SafetyRoute: typeof SafetyRoute
+  MedicineIdRoute: typeof MedicineIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SafetyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/medicine/$id': {
+      id: '/medicine/$id'
+      path: '/medicine/$id'
+      fullPath: '/medicine/$id'
+      preLoaderRoute: typeof MedicineIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   InteractionsRoute: InteractionsRoute,
   MedicinesRoute: MedicinesRoute,
   SafetyRoute: SafetyRoute,
+  MedicineIdRoute: MedicineIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
