@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SafetyBanner } from "@/components/rxlens/safety-banner";
 import { demoPrescription } from "@/lib/rxlens-demo";
+import { buildView, CONFIDENCE_NOTE, EducationalBanner, MedicineSafetySections, PrescriptionSummaryTable, type ReadLine } from "@/components/rxlens/medicine-safety";
 import {
   analyzePrescription,
   type ExtractedField,
@@ -380,9 +381,12 @@ function ResultsView({ source, outcome, onReset, onTryDemo }: { source: Source; 
     .map((m) => (m.name.value ? `Possible reading: ${m.name.value} ${m.strength.value ?? ""}.` : ""))
     .join(" ")} Always verify prescription information with your doctor or pharmacist before taking or changing medication.`;
 
+  const lines: ReadLine[] = a.medicines.map(toLine);
   return (
     <div className="animate-fade-up space-y-6">
+      <EducationalBanner />
       <SummaryCard confidence={a.overall_confidence} onSpeak={() => speak(summary)} />
+      {lines.length ? <PrescriptionSummaryTable lines={lines} demo={false} /> : null}
       <SourceImage source={source} />
 
       {a.status === "unreadable" || a.medicines.length === 0 ? (
@@ -392,7 +396,7 @@ function ResultsView({ source, outcome, onReset, onTryDemo }: { source: Source; 
       ) : null}
 
       <article className="rounded-3xl border border-border bg-card p-6 shadow-card">
-        <p className="text-sm font-extrabold uppercase tracking-widest text-primary">A. Text detected in your image</p>
+        <p className="text-sm font-extrabold uppercase tracking-widest text-primary">📋 From Prescription — text detected in your image</p>
         <pre className="mt-3 max-h-64 overflow-auto whitespace-pre-wrap break-words rounded-2xl bg-surface p-4 font-sans text-sm leading-6 text-foreground">
           {a.ocr_text.trim() || "No readable text detected."}
         </pre>
@@ -400,10 +404,10 @@ function ResultsView({ source, outcome, onReset, onTryDemo }: { source: Source; 
 
       {a.medicines.length > 0 ? (
         <div>
-          <p className="mb-3 text-sm font-extrabold uppercase tracking-widest text-primary">B. RxLens interpretation</p>
+          <p className="mb-3 text-sm font-extrabold uppercase tracking-widest text-primary">🔍 OCR Interpretation — what RxLens thinks it read</p>
           <div className="grid gap-5 xl:grid-cols-2">
             {a.medicines.map((m, i) => (
-              <RealMedicineCard key={i} medicine={m} />
+              <RealMedicineCard key={i} medicine={m} line={lines[i]!} lines={lines} />
             ))}
           </div>
         </div>
@@ -419,7 +423,11 @@ function needsCheck(f: ExtractedField) {
   return f.value == null || f.confidence == null || f.confidence < LOW_CONFIDENCE;
 }
 
-function RealMedicineCard({ medicine }: { medicine: ExtractedMedicine }) {
+function toLine(m: ExtractedMedicine): ReadLine {
+  return { name: m.name.value, strength: m.strength.value, form: null, frequency: m.frequency.value, duration: m.duration.value, confidence: m.name.confidence };
+}
+
+function RealMedicineCard({ medicine, line, lines }: { medicine: ExtractedMedicine; line: ReadLine; lines: ReadLine[] }) {
   const nameUncertain = needsCheck(medicine.name);
   const rows: [string, ExtractedField][] = [
     ["Strength", medicine.strength],
@@ -462,7 +470,7 @@ function RealMedicineCard({ medicine }: { medicine: ExtractedMedicine }) {
       </dl>
 
       <div className="mt-5 rounded-2xl bg-primary-soft p-4">
-        <p className="font-bold text-primary">C. General educational information</p>
+        <p className="font-bold text-primary">📚 General Medicine Information (AI summary)</p>
         <p className="mt-2 leading-7 text-foreground">
           {!nameUncertain && medicine.educational_info
             ? medicine.educational_info
@@ -472,6 +480,7 @@ function RealMedicineCard({ medicine }: { medicine: ExtractedMedicine }) {
           This medicine is commonly used for certain conditions. Only your healthcare professional can confirm why it was prescribed for you.
         </p>
       </div>
+      <MedicineSafetySections view={buildView(line, lines, "ocr")} demo={false} />
     </article>
   );
 }
@@ -499,7 +508,7 @@ function SummaryCard({ confidence, onSpeak, demo = false }: { confidence: number
             ) : (
               <span className="font-bold text-foreground">Reading confidence unavailable</span>
             )}
-            <br />Prototype reading confidence — not medical certainty.
+            <br />Prototype reading confidence — not medical certainty. {CONFIDENCE_NOTE}
           </p>
         </div>
         <Button type="button" variant="clinical" onClick={onSpeak}>
@@ -527,19 +536,23 @@ function Notice({ icon: Icon, title, text, children }: { icon: typeof AlertTrian
   );
 }
 
+const demoLines: ReadLine[] = demoPrescription.medicines.map((m) => ({ name: m.name, strength: m.strength, form: m.name === "Amoxicillin" ? "Capsule" : "Tablet", frequency: m.frequency, duration: m.duration, confidence: m.confidence }));
+
 function DemoResults({ onReset }: { onReset: () => void }) {
   return (
     <div className="animate-fade-up space-y-6">
       <p className="rounded-2xl border border-destructive/30 bg-danger-soft p-3 text-center text-sm font-extrabold uppercase tracking-widest text-destructive">
         {demoPrescription.label}
       </p>
+      <EducationalBanner />
       <SummaryCard
         demo
         confidence={demoPrescription.confidence}
         onSpeak={() => speak("Fictional demo summary. This is not a real prescription. Always verify prescription information with your doctor or pharmacist.")}
       />
+      <PrescriptionSummaryTable demo lines={demoLines} />
       <div className="grid gap-5 xl:grid-cols-2">
-        {demoPrescription.medicines.map((m) => (
+        {demoPrescription.medicines.map((m, i) => (
           <article key={m.name} className="rounded-3xl border border-border bg-card p-6 shadow-card">
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
               <div className="min-w-0">
@@ -564,6 +577,7 @@ function DemoResults({ onReset }: { onReset: () => void }) {
               <p className="mt-2 leading-7 text-foreground">{m.purpose}</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{m.why}</p>
             </div>
+            <MedicineSafetySections view={buildView(demoLines[i]!, demoLines, "demo")} demo />
           </article>
         ))}
       </div>
