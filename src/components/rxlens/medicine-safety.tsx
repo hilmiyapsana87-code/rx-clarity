@@ -191,7 +191,7 @@ export function MedicineSafetySections({ view, demo }: { view: MedicineView; dem
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary">{tag}</span>
         <Button type="button" variant="ghost" size="sm" onClick={() => speak(readText)} aria-label={`Read aloud information about ${view.medicineName ?? "this medicine"}`}>
-          <Volume2 aria-hidden="true" /> 🔊 Read Aloud
+          <Volume2 aria-hidden="true" /> Read Aloud
         </Button>
       </div>
       <Accordion type="multiple" className="mt-2 rounded-2xl border border-border bg-surface/50 px-4">
