@@ -8,6 +8,7 @@ import {
   useRouter,
   useRouterState,
 } from "@tanstack/react-router";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { Menu, ShieldCheck, Sparkles } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -53,7 +54,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
