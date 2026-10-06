@@ -30,6 +30,7 @@ const navItems = [
   { to: "/analyze", label: "Analyze" },
   { to: "/safety", label: "Safety" },
   { to: "/about", label: "About" },
+  { to: "/privacy", label: "Privacy" },
 ] as const;
 
 function NotFoundComponent() {
