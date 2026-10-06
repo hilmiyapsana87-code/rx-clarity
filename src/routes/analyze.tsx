@@ -14,7 +14,10 @@ import {
   Volume2,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { SafetyReview } from "@/components/rxlens/safety-review";
+import { SCENARIOS, type Scenario } from "@/lib/demo-scenarios";
+import { makeMedicine } from "@/lib/medicine-session";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -386,6 +389,7 @@ function ResultsView({ source, outcome, onReset, onTryDemo }: { source: Source; 
     <div className="animate-fade-up space-y-6">
       <EducationalBanner />
       <SummaryCard confidence={a.overall_confidence} onSpeak={() => speak(summary)} />
+      {a.medicines.length ? <RealSafetyReview analysis={a} /> : null}
       {lines.length ? <PrescriptionSummaryTable lines={lines} demo={false} /> : null}
       <SourceImage source={source} />
 
@@ -417,6 +421,21 @@ function ResultsView({ source, outcome, onReset, onTryDemo }: { source: Source; 
       {actions}
     </div>
   );
+}
+
+function RealSafetyReview({ analysis }: { analysis: PrescriptionAnalysis }) {
+  const meds = useMemo(
+    () =>
+      analysis.medicines.map((m) =>
+        makeMedicine({
+          name: m.name.value, strength: m.strength.value, form: null, frequency: m.frequency.value,
+          duration: m.duration.value, instructions: m.instructions.value, confidence: m.name.confidence, origin: "upload",
+          conf: { name: m.name.confidence, strength: m.strength.confidence, frequency: m.frequency.confidence, duration: m.duration.confidence, instructions: m.instructions.confidence },
+        }),
+      ),
+    [analysis],
+  );
+  return <SafetyReview meds={meds} />;
 }
 
 function needsCheck(f: ExtractedField) {
@@ -538,6 +557,34 @@ function Notice({ icon: Icon, title, text, children }: { icon: typeof AlertTrian
 
 const demoLines: ReadLine[] = demoPrescription.medicines.map((m) => ({ name: m.name, strength: m.strength, form: m.name === "Amoxicillin" ? "Capsule" : "Tablet", frequency: m.frequency, duration: m.duration, confidence: m.confidence }));
 
+function ScenarioReview() {
+  const [id, setId] = useState<Scenario["id"]>("messy");
+  const meds = useMemo(() => {
+    const sc = SCENARIOS.find((s) => s.id === id)!;
+    return sc.lines.map((l) => makeMedicine({ ...l, confidence: l.conf.name ?? null, origin: "demo" }));
+  }, [id]);
+  const sc = SCENARIOS.find((s) => s.id === id)!;
+  return (
+    <article className="rounded-3xl border border-border bg-soft-panel p-5 shadow-card sm:p-6">
+      <p className="text-xs font-extrabold uppercase tracking-widest text-destructive">Fictional demo cases</p>
+      <h3 className="mt-1 font-display text-2xl font-bold text-foreground">See how RxLens handles uncertainty</h3>
+      <div className="mt-4 flex flex-wrap gap-2" role="tablist">
+        {SCENARIOS.map((s) => (
+          <button key={s.id} type="button" role="tab" aria-selected={id === s.id} onClick={() => setId(s.id)}
+            className={`rounded-full border px-4 py-2 text-sm font-bold transition-colors ${id === s.id ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-foreground hover:bg-surface"}`}>
+            {s.title}
+          </button>
+        ))}
+      </div>
+      <p className="mt-3 text-sm text-muted-foreground">{sc.text}{sc.id === "unreadable" ? " RxLens does not guess." : ""}</p>
+      <ul className="mt-3 grid gap-1 rounded-2xl bg-card p-3 font-mono text-xs text-foreground">
+        {sc.lines.map((l) => <li key={l.raw}>{l.raw}</li>)}
+      </ul>
+      <div className="mt-5"><SafetyReview meds={meds} /></div>
+    </article>
+  );
+}
+
 function DemoResults({ onReset }: { onReset: () => void }) {
   return (
     <div className="animate-fade-up space-y-6">
@@ -550,6 +597,7 @@ function DemoResults({ onReset }: { onReset: () => void }) {
         confidence={demoPrescription.confidence}
         onSpeak={() => speak("Fictional demo summary. This is not a real prescription. Always verify prescription information with your doctor or pharmacist.")}
       />
+      <ScenarioReview />
       <PrescriptionSummaryTable demo lines={demoLines} />
       <div className="grid gap-5 xl:grid-cols-2">
         {demoPrescription.medicines.map((m, i) => (

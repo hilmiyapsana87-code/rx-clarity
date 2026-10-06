@@ -16,6 +16,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as InteractionsRouteImport } from './routes/interactions'
 import { Route as MedicinesRouteImport } from './routes/medicines'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as MedicineIdRouteImport } from './routes/medicine.$id'
 
@@ -54,6 +55,11 @@ const MedicinesRoute = MedicinesRouteImport.update({
   path: '/medicines',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SafetyRoute = SafetyRouteImport.update({
   id: '/safety',
   path: '/safety',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
+  '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/medicine/$id': typeof MedicineIdRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
+  '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/medicine/$id': typeof MedicineIdRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/interactions': typeof InteractionsRoute
   '/medicines': typeof MedicinesRoute
+  '/privacy': typeof PrivacyRoute
   '/safety': typeof SafetyRoute
   '/medicine/$id': typeof MedicineIdRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/interactions'
     | '/medicines'
+    | '/privacy'
     | '/safety'
     | '/medicine/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/interactions'
     | '/medicines'
+    | '/privacy'
     | '/safety'
     | '/medicine/$id'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/interactions'
     | '/medicines'
+    | '/privacy'
     | '/safety'
     | '/medicine/$id'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   InteractionsRoute: typeof InteractionsRoute
   MedicinesRoute: typeof MedicinesRoute
+  PrivacyRoute: typeof PrivacyRoute
   SafetyRoute: typeof SafetyRoute
   MedicineIdRoute: typeof MedicineIdRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicinesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/safety': {
       id: '/safety'
       path: '/safety'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   InteractionsRoute: InteractionsRoute,
   MedicinesRoute: MedicinesRoute,
+  PrivacyRoute: PrivacyRoute,
   SafetyRoute: SafetyRoute,
   MedicineIdRoute: MedicineIdRoute,
 }
