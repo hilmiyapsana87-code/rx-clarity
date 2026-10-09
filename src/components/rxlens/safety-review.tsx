@@ -13,6 +13,7 @@ import {
   safetyGate,
   verificationItems,
 } from "@/lib/safety-logic";
+import { ResultsTools } from "./results-tools";
 
 const medName = (m: SessionMedicine, i: number) => m.name ?? `Unreadable medicine ${i + 1}`;
 
@@ -132,6 +133,7 @@ export function SafetyReview({ meds }: { meds: SessionMedicine[] }) {
           </div>
         </article>
       ) : null}
+      <ResultsTools meds={meds} />
     </div>
   );
 }
