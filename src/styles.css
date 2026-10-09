@@ -266,3 +266,8 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+.elder-mode { font-size: 125%; }
+.elder-mode body { line-height: 1.75; }
+.elder-mode .text-muted-foreground { color: var(--foreground); }
+.elder-mode button, .elder-mode a { min-height: 3rem; }

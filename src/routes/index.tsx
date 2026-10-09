@@ -39,7 +39,7 @@ function Index() {
             RxLens
           </h1>
           <p className="mt-4 font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl">
-            See your prescription clearly.
+            Read. Verify. Understand.
           </p>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
             Understand what your prescription says — without replacing the guidance of your doctor or pharmacist.
@@ -56,6 +56,9 @@ function Index() {
                 <PlayCircle aria-hidden="true" />
                 See How It Works
               </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/privacy">Privacy</Link>
             </Button>
           </div>
         </div>

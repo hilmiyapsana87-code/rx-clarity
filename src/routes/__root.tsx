@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import appCss from "../styles.css?url";
+import { settings, useSettings } from "../lib/settings";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 const navItems = [
@@ -153,6 +154,10 @@ function AppChrome({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("high-contrast", highContrast);
     return () => document.documentElement.classList.remove("high-contrast");
   }, [highContrast]);
+  const { elder } = useSettings();
+  useEffect(() => {
+    document.documentElement.classList.toggle("elder-mode", elder);
+  }, [elder]);
 
   return (
     <div className="min-h-dvh bg-rxlens-page text-foreground">
@@ -193,6 +198,9 @@ function AppChrome({ children }: { children: ReactNode }) {
             >
               <ShieldCheck aria-hidden="true" />
               Accessibility
+            </Button>
+            <Button type="button" size="sm" variant={elder ? "default" : "clinical"} aria-pressed={elder} onClick={() => settings.toggleElder()}>
+              Elder Mode
             </Button>
             <Button asChild variant="hero" size="lg">
               <Link to="/analyze">Analyze Prescription</Link>
