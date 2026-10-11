@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SafetyReview } from "@/components/rxlens/safety-review";
+import { HandwritingMap } from "@/components/rxlens/handwriting-map";
 import { SCENARIOS, type Scenario } from "@/lib/demo-scenarios";
 import { makeMedicine } from "@/lib/medicine-session";
 
@@ -577,9 +578,12 @@ function ScenarioReview() {
         ))}
       </div>
       <p className="mt-3 text-sm text-muted-foreground">{sc.text}{sc.id === "unreadable" ? " RxLens does not guess." : ""}</p>
-      <ul className="mt-3 grid gap-1 rounded-2xl bg-card p-3 font-mono text-xs text-foreground">
-        {sc.lines.map((l) => <li key={l.raw}>{l.raw}</li>)}
-      </ul>
+      <div className="mt-3">
+        <HandwritingMap lines={sc.lines.map((l) => {
+          const v = Object.values(l.conf).filter((x): x is number => x != null);
+          return { raw: l.raw, reason: l.reason, confidence: v.length ? Math.min(...v) : null };
+        })} />
+      </div>
       <div className="mt-5"><SafetyReview meds={meds} /></div>
     </article>
   );

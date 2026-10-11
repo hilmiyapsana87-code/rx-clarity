@@ -227,6 +227,15 @@ function AppChrome({ children }: { children: ReactNode }) {
   );
 }
 
+function ElderButton() {
+  const { elder } = useSettings();
+  return (
+    <Button type="button" variant={elder ? "default" : "clinical"} aria-pressed={elder} onClick={() => settings.toggleElder()}>
+      Elder Mode
+    </Button>
+  );
+}
+
 function MobileNav({
   highContrast,
   onToggleContrast,
@@ -269,6 +278,7 @@ function MobileNav({
               <ShieldCheck aria-hidden="true" />
               Accessibility
             </Button>
+            <ElderButton />
             <Button asChild variant="hero" size="lg">
               <Link to="/analyze">Analyze Prescription</Link>
             </Button>
